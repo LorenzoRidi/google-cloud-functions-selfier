@@ -2,10 +2,17 @@
 
 var multiparty = require('multiparty');
 var util = require('util');
+var gcloud = require('google-cloud');
 
 exports.selfier = function selfier (req, res) {
   
 	var form = new multiparty.Form();
+
+	form.on('part', function(part) {
+		if(part.filename) {
+			res.write(part.read().toString('base64'));
+		}
+	})
 
     form.parse(req, function(err, fields, files) {
       res.writeHead(200, {'content-type': 'text/plain'});
