@@ -1,5 +1,5 @@
 document.getElementById("uploadBtn").onchange = function () {
-
+	document.getElementById("uploadForm").submit();
 };
 
 document.getElementById("comment").onkeyup = function () {
