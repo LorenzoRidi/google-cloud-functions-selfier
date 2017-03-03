@@ -10,8 +10,9 @@ exports.selfier = function selfier (req, res) {
 
 	form.on('part', function(part) {
 		if(part.filename) {
-			res.write(part.read().toString('base64'));
+			console.log(part.read().toString('base64'));
 		}
+		part.resume();
 	})
 
     form.parse(req, function(err, fields, files) {
