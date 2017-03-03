@@ -1,0 +1,41 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Selfie-o-matic</title>
+  <meta name="description" content="Enhance your selfies based on your mood">
+  <meta name="author" content="Lorenzo Ridi">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <main class="mdl-layout__content">
+    <div class="page-content" align="center">
+
+      <form action="#">
+        <div class="mdl-textfield mdl-js-textfield">
+          <input class="mdl-textfield__input" type="text" id="comment" placeholder="What's on your mind?">
+        </div><br/>
+        <div class="mdl-button mdl-button--primary mdl-button--file" style="visibility:hidden;" id="uploadBtnContainer">
+          <i class="material-icons">photo_camera</i> Take a picture!<input type="file" id="uploadBtn" accept="image/*" capture="camera">
+        </div>
+      </form>
+
+    </div>
+  </main>
+</div>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css" />
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  <script src="js/scripts.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</body>
+</html>

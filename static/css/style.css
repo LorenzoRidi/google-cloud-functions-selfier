@@ -1,0 +1,22 @@
+html {
+  width: 100%;
+}
+
+
+.mdl-button--file input {
+    cursor: pointer;
+    height: 100%;
+    right: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    z-index: 4;
+}
+
+.mdl-textfield--file .mdl-textfield__input {
+  box-sizing: border-box;
+}
+  
+.mdl-textfield--file .mdl-button--file {
+  right: 0;
+}
