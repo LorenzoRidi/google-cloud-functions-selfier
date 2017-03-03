@@ -1,5 +1,8 @@
 'use strict';
 
+var multiparty = require('multiparty');
+var util = require('util');
+
 exports.selfier = function selfier (req, res) {
   
 	var form = new multiparty.Form();
@@ -9,5 +12,5 @@ exports.selfier = function selfier (req, res) {
       res.write('received upload:\n\n');
       res.end(util.inspect({fields: fields, files: files}));
     });
-  
+
 };
