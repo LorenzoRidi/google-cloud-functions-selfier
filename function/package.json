@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "busboy": "^0.2.14",
-    "@google-cloud/vision":"^0.8.1"
+    "@google-cloud/vision":"^0.8.1",
+    "jimp":"^0.2.27"
   }
 }

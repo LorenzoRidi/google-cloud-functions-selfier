@@ -5,6 +5,7 @@ var http = require('http'),
 
 var Busboy = require('busboy');
 var vision = require('@google-cloud/vision')();
+var jimp = require('jimp');
 
 exports.selfier = function selfier (req, res) {
 
@@ -30,10 +31,32 @@ exports.selfier = function selfier (req, res) {
 			}
 
 			vision.annotate(annotateImageReq,function(err,annotations, apiResponse) {
-				console.log("err: ", JSON.stringify(err));
-				console.log("annotations: ", JSON.stringify(annotations));
-				console.log("apiResponse: ", JSON.stringify(apiResponse));
-				res.status(200).end();
+
+				console.log("Mime Type: ", mimetype);
+
+				jimp.read(Buffer.concat(imageByteArray), function(err, image) {
+					if(err) {
+						res.writeHead(500,{'Access-Control-Allow-Origin':'*'})
+						res.write(JSON.stringify(err));
+						res.end();
+					} else {
+
+						image.greyscale().getBase64(jimp.MIME_PNG, function(err, base64Response) {
+							if(err) {
+								res.writeHead(500,{'Access-Control-Allow-Origin':'*'})
+								res.write(JSON.stringify(err));
+								res.end();
+							} else {
+								console.log(base64Response);
+								res.writeHead(200,{'Access-Control-Allow-Origin':'*'})
+								res.write(base64Response);
+								res.end();
+							}
+						});
+
+						
+					}
+				})				
 			});
 		});
 	});
