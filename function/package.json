@@ -1,7 +1,8 @@
 {
   "dependencies": {
+    "@google-cloud/vision": "^0.8.1",
+    "async": "^2.1.5",
     "busboy": "^0.2.14",
-    "@google-cloud/vision":"^0.8.1",
-    "jimp":"^0.2.27"
+    "jimp": "^0.2.27"
   }
 }
