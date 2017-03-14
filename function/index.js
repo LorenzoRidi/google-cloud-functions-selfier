@@ -20,7 +20,6 @@ exports.selfier = function selfier (req, res) {
 		console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
 
 		file.on('data', function(data) {
-			console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
 			imageByteArray.push(data);
 		});
 
@@ -60,7 +59,7 @@ exports.selfier = function selfier (req, res) {
 					}
 
 					if(commentSentiment[0] >= 0) {
-						image = image.normalize().posterize(10).brightness(0.3).contrast(0.5);
+						image = image.normalize().brightness(0.3).contrast(0.5);
 					} else {
 						image = image.greyscale();
 					}
@@ -69,19 +68,40 @@ exports.selfier = function selfier (req, res) {
 						if(annotation.joyLikelihood != "VERY_UNLIKELY") {
 							console.log("Someone seems joyful here.");
 							jimp.read("https://storage.googleapis.com/noovle-gcf-demo-static/img/sun.png", function(err, sunImage) {
-								sunImage = sunImage.resize(annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x, jimp.AUTO);
+								if(err) {
+									res.writeHead(500,{'Access-Control-Allow-Origin':'*'})
+									res.write(JSON.stringify(err));
+									res.end();
+									return;
+								}
+
+								sunImage = sunImage.resize((annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x) * 0.8, jimp.AUTO);
 								image = image.composite(sunImage,annotation.fdBoundingPoly.vertices[0].x,annotation.fdBoundingPoly.vertices[0].y - sunImage.bitmap.height);
 								callback();
 							})
 						} else if(annotation.angerLikelihood != "VERY_UNLIKELY") {
 							console.log("Someone seems angry here.");
 							jimp.read("https://storage.googleapis.com/noovle-gcf-demo-static/img/rain.png", function(err, rainImage) {
-								rainImage = rainImage.resize(annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x, jimp.AUTO);
-								image = image.composite(rainImage,annotation.fdBoundingPoly.vertices[0].x,annotation.fdBoundingPoly.vertices[0].y - rainImage.bitmap.height);
+								if(err) {
+									res.writeHead(500,{'Access-Control-Allow-Origin':'*'})
+									res.write(JSON.stringify(err));
+									res.end();
+									return;
+								}
+								
+								rainImage = rainImage.resize((annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x) * 0.8, jimp.AUTO);
+								image = image.composite(rainImage,annotation.fdBoundingPoly.vertices[0].x + (annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x) * 0.1,annotation.boundingPoly.vertices[0].y - rainImage.bitmap.height);
 								callback();
 							})
 						}
 					}, function(err) {
+						if(err) {
+							res.writeHead(500,{'Access-Control-Allow-Origin':'*'})
+							res.write(JSON.stringify(err));
+							res.end();
+							return;
+						}
+								
 						image = image.resize(512,jimp.AUTO);
 
 						image.getBase64(jimp.MIME_PNG, function(err, base64Response) {
