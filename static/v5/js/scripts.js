@@ -1,6 +1,8 @@
 $(document).ready(function() {
 
 	$('#uploadBtnContainer').hide();
+	$('#preloader').hide();
+	$('#errorText').hide();
 
 	$('#uploadBtn').change(function() {
 
@@ -20,6 +22,9 @@ $(document).ready(function() {
 
 			var img = new Image;
 			img.onload = function(){
+				$('#responseImage').hide();
+				$('#preloader').show();
+
   				drawImageScaled(img,ctx);
   				console.log(canvas.width + ", " + canvas.height);
   				var dataURL = canvas.toDataURL('image/jpeg', 0.5);
@@ -39,10 +44,14 @@ $(document).ready(function() {
 					processData:false,
 					success: function(data, textStatus, jqXHR)
 					{
+						$('#preloader').hide();
 						$('#responseImage').attr("src",data);
+						$('#responseImage').show();
 					},
 					error: function(jqXHR, textStatus, errorThrown) 
 					{
+						$('#preloader').hide();
+						$('#errorText').show();
 					}          
 				});
 			};

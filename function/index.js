@@ -76,7 +76,7 @@ exports.selfier = function selfier (req, res) {
 								}
 
 								sunImage = sunImage.resize((annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x) * 0.8, jimp.AUTO);
-								image = image.composite(sunImage,annotation.fdBoundingPoly.vertices[0].x,annotation.fdBoundingPoly.vertices[0].y - sunImage.bitmap.height);
+								image = image.composite(sunImage,annotation.fdBoundingPoly.vertices[0].x + (annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x) * 0.1,annotation.boundingPoly.vertices[0].y - sunImage.bitmap.height);
 								callback();
 							})
 						} else if(annotation.angerLikelihood != "VERY_UNLIKELY") {
@@ -93,6 +93,9 @@ exports.selfier = function selfier (req, res) {
 								image = image.composite(rainImage,annotation.fdBoundingPoly.vertices[0].x + (annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x) * 0.1,annotation.boundingPoly.vertices[0].y - rainImage.bitmap.height);
 								callback();
 							})
+						} else {
+							console.log("No facial expressions here.");
+							callback();
 						}
 					}, function(err) {
 						if(err) {
