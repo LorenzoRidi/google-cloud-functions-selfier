@@ -90,7 +90,7 @@ exports.selfier = function selfier (req, res) {
 								}
 								
 								rainImage = rainImage.resize((annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x), jimp.AUTO);
-								image = image.composite(rainImage,annotation.fdBoundingPoly.vertices[0].x,annotation.boundingPoly.vertices[0].y - rainImage.bitmap.height);
+								image = image.composite(rainImage,annotation.fdBoundingPoly.vertices[0].x,annotation.boundingPoly.vertices[0].y - (rainImage.bitmap.height / 2));
 								callback();
 							})
 						} else {
