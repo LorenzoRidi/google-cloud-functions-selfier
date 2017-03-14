@@ -8,7 +8,6 @@ $(document).ready(function() {
 
 		var formObj = $('#uploadForm');
 		var formURL = formObj.attr("action");
-		var formData = new FormData(document.getElementById("uploadForm"));
 
 		var reader = new FileReader();
 
@@ -28,18 +27,18 @@ $(document).ready(function() {
 				$('#preloader').show();
 
   				drawImageScaled(img,ctx);
-  				console.log(canvas.width + ", " + canvas.height);
+  				
   				var dataURL = canvas.toDataURL('image/jpeg', 0.5);
   				var blob = dataURItoBlob(dataURL);
-  				console.log($('#comment').val());
-  				formData.delete("uploadBtn");
-				formData.append("image", blob);
-				console.log(formData);
+
+  				var callData = new FormData();
+  				callData.append("comment", $("#comment").val());
+				callData.append("image", blob);
 
 				$.ajax({
 					url: formURL,
 					type: 'POST',
-					data:  formData,
+					data:  callData,
 					mimeType:"multipart/form-data",
 					contentType: false,
 					cache: false,
