@@ -15,8 +15,10 @@ $(document).ready(function() {
 		reader.addEventListener("load", function () {
 
 			var canvas = document.createElement("canvas");
-			canvas.width = 256;
-			canvas.height = 256;
+			canvas.width = 512;
+			canvas.height = 512;
+			canvas.style.backgroundColor = "white";
+
 			document.getElementById("canvasContainer").appendChild(canvas);
 			var ctx = canvas.getContext("2d");
 

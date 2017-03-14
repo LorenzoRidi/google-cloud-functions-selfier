@@ -59,7 +59,7 @@ exports.selfier = function selfier (req, res) {
 					}
 
 					if(commentSentiment[0] >= 0) {
-						image = image.normalize().brightness(0.3).contrast(0.5);
+						image = image.normalize().brightness(0.2).contrast(0.2);
 					} else {
 						image = image.greyscale();
 					}
@@ -67,7 +67,7 @@ exports.selfier = function selfier (req, res) {
 					async.each(annotations[0].faceAnnotations, function(annotation, callback) {
 						if(annotation.joyLikelihood != "VERY_UNLIKELY") {
 							console.log("Someone seems joyful here.");
-							jimp.read("https://storage.googleapis.com/noovle-gcf-demo-static/img/sun.png", function(err, sunImage) {
+							jimp.read("https://storage.googleapis.com/noovle-gcf-demo-static/img/sparkles.png", function(err, sunImage) {
 								if(err) {
 									res.writeHead(500,{'Access-Control-Allow-Origin':'*'})
 									res.write(JSON.stringify(err));
@@ -75,13 +75,13 @@ exports.selfier = function selfier (req, res) {
 									return;
 								}
 
-								sunImage = sunImage.resize((annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x) * 0.8, jimp.AUTO);
-								image = image.composite(sunImage,annotation.fdBoundingPoly.vertices[0].x + (annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x) * 0.1,annotation.boundingPoly.vertices[0].y - sunImage.bitmap.height);
+								sunImage = sunImage.resize((annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x), jimp.AUTO);
+								image = image.composite(sunImage,annotation.fdBoundingPoly.vertices[0].x,annotation.boundingPoly.vertices[0].y - (sunImage.bitmap.height / 2));
 								callback();
 							})
 						} else if(annotation.angerLikelihood != "VERY_UNLIKELY") {
 							console.log("Someone seems angry here.");
-							jimp.read("https://storage.googleapis.com/noovle-gcf-demo-static/img/rain.png", function(err, rainImage) {
+							jimp.read("https://storage.googleapis.com/noovle-gcf-demo-static/img/cloud.png", function(err, rainImage) {
 								if(err) {
 									res.writeHead(500,{'Access-Control-Allow-Origin':'*'})
 									res.write(JSON.stringify(err));
@@ -89,8 +89,8 @@ exports.selfier = function selfier (req, res) {
 									return;
 								}
 								
-								rainImage = rainImage.resize((annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x) * 0.8, jimp.AUTO);
-								image = image.composite(rainImage,annotation.fdBoundingPoly.vertices[0].x + (annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x) * 0.1,annotation.boundingPoly.vertices[0].y - rainImage.bitmap.height);
+								rainImage = rainImage.resize((annotation.fdBoundingPoly.vertices[1].x - annotation.fdBoundingPoly.vertices[0].x), jimp.AUTO);
+								image = image.composite(rainImage,annotation.fdBoundingPoly.vertices[0].x,annotation.boundingPoly.vertices[0].y - rainImage.bitmap.height);
 								callback();
 							})
 						} else {
