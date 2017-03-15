@@ -52,6 +52,7 @@ function returnBase64Image(base64Image, res) {
 }
 
 function returnError(err, res) {
+	console.log(err);
 	res.writeHead(500,{'Access-Control-Allow-Origin':'*'})
 	res.write(JSON.stringify(err));
 	res.end();
@@ -80,6 +81,10 @@ function annotateImage(res, imageByteArray, commentSentiment) {
 	}
 
 	vision.annotate(annotateImageReq,function(err,annotations, apiResponse) {
+		if(err) {
+			returnError(err, res);
+			return;
+		}
 
 		jimp.read(Buffer.concat(imageByteArray), function(err, image) {
 			if(err) {
