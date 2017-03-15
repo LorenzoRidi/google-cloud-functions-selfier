@@ -14,11 +14,17 @@ $(document).ready(function() {
 		reader.addEventListener("load", function () {
 
 			var canvas = document.createElement("canvas");
-			canvas.width = 512;
-			canvas.height = 512;
+			canvas.width = 1024;
+			canvas.height = 1024;
 			canvas.style.backgroundColor = "white";
 
-			document.getElementById("canvasContainer").appendChild(canvas);
+			var canvasContainer = document.getElementById("canvasContainer");
+			while (canvasContainer.firstChild) {
+    		canvasContainer.removeChild(canvasContainer.firstChild);
+			}
+			$('#responseImage').attr("src","");
+
+			canvasContainer.appendChild(canvas);
 			var ctx = canvas.getContext("2d");
 
 			var img = new Image;
@@ -51,8 +57,28 @@ $(document).ready(function() {
 					},
 					error: function(jqXHR, textStatus, errorThrown) 
 					{
-						$('#preloader').hide();
-						$('#errorText').show();
+						// Try again. (I know, sorry for that.)
+						// FIXME: do this in a decent way.
+						$.ajax({
+							url: formURL,
+							type: 'POST',
+							data:  callData,
+							mimeType:"multipart/form-data",
+							contentType: false,
+							cache: false,
+							processData:false,
+							success: function(data, textStatus, jqXHR)
+							{
+								$('#preloader').hide();
+								$('#responseImage').attr("src",data);
+								$('#responseImage').show();
+							},
+							error: function(jqXHR, textStatus, errorThrown) 
+							{
+								$('#preloader').hide();
+								$('#errorText').show();
+							}          
+						});
 					}          
 				});
 			};
