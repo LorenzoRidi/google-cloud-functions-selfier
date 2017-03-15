@@ -88,7 +88,7 @@ function annotateImage(res, imageByteArray, commentSentiment) {
 			}
 
 			if(commentSentiment[0] >= 0) {
-				image = image.normalize().brightness(0.2).contrast(0.2);
+				image = image.normalize().contrast(0.2);
 			} else {
 				image = image.greyscale();
 			}
