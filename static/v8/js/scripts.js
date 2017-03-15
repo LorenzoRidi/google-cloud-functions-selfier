@@ -14,8 +14,8 @@ $(document).ready(function() {
 		reader.addEventListener("load", function () {
 
 			var canvas = document.createElement("canvas");
-			canvas.width = 1024;
-			canvas.height = 1024;
+			canvas.width = 512;
+			canvas.height = 512;
 			canvas.style.backgroundColor = "white";
 
 			var canvasContainer = document.getElementById("canvasContainer");
